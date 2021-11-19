@@ -14,21 +14,21 @@ class Accelerometer:
   static I2C_ADDRESS_ALT ::= 0b0011001  // 7.1.2.
 
   /** Low power 0.5Hz output data rate. */
-  static RATE_0_5HZ   ::= 0b01000
+  static RATE_0_5HZ ::= 0b01000
   /** Low power 1Hz output data rate. */
-  static RATE_1HZ   ::= 0b01100
+  static RATE_1HZ ::= 0b01100
   /** Low power 2Hz output data rate. */
-  static RATE_2HZ   ::= 0b10000
+  static RATE_2HZ ::= 0b10000
   /** Low power 5Hz output data rate. */
-  static RATE_5HZ   ::= 0b10100
+  static RATE_5HZ ::= 0b10100
   /** Low power 10Hz output data rate. */
-  static RATE_10HZ   ::= 0b11000
+  static RATE_10HZ ::= 0b11000
   /** Normal power 50Hz output data rate. */
-  static RATE_50HZ   ::= 0b00100
+  static RATE_50HZ ::= 0b00100
   /** Normal power 100Hz output data rate. */
-  static RATE_100HZ  ::= 0b00101
+  static RATE_100HZ ::= 0b00101
   /** Normal power 400Hz output data rate. */
-  static RATE_400HZ  ::= 0b00110
+  static RATE_400HZ ::= 0b00110
   /** Normal power 1000Hz output data rate. */
   static RATE_1000HZ ::= 0b00111
 

@@ -18,10 +18,10 @@ class Magnetometer:
   static MR_REG_M_ ::= 0x02
   static OUT_X_H_M_ ::= 0x03
   static OUT_X_L_M_ ::= 0x04
-  static OUT_Z_H_M_ ::= 0x05
-  static OUT_Z_L_M_ ::= 0x06
-  static OUT_Y_H_M_ ::= 0x07
-  static OUT_Y_L_M_ ::= 0x08
+  static OUT_Y_H_M_ ::= 0x05
+  static OUT_Y_L_M_ ::= 0x06
+  static OUT_Z_H_M_ ::= 0x07
+  static OUT_Z_L_M_ ::= 0x08
   static IRA_REG_M_ ::= 0x0A
   static IRB_REG_M_ ::= 0x0B
   static IRC_REG_M_ ::= 0x0C
@@ -112,8 +112,8 @@ class Magnetometer:
   */
   read -> math.Point3f:
     x := reg_.read_i16_be OUT_X_H_M_
-    z := reg_.read_i16_be OUT_Z_H_M_
     y := reg_.read_i16_be OUT_Y_H_M_
+    z := reg_.read_i16_be OUT_Z_H_M_
 
     x_converted := x * GAUSS_TO_MICROTESLA_ / gain_xy_
     y_converted := y * GAUSS_TO_MICROTESLA_ / gain_xy_

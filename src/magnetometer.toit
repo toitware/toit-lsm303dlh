@@ -58,7 +58,7 @@ class Magnetometer:
     if value != 0x483433: throw "INVALID_CHIP"
 
   enable -> none
-      --rate  /int = RATE_30HZ
+      --rate  /int = RATE_7_5HZ
       --range /int = RANGE_1_3G
       :
     if not 0 <= rate < 7: throw "INVALID_RATE"
@@ -131,11 +131,14 @@ class Magnetometer:
 
   /**
   Reads the raw magnetic field values.
+
+  A value of -4096 means that the sensor was saturated at that range. Consider
+    calling the $enable function with a wider range.
   */
   read --raw -> List:
     if not raw: throw "INVALID_ARGUMENT"
     return [
       reg_.read_i16_be OUT_X_H_M_,
-      reg_.read_i16_be OUT_Z_H_M_,
       reg_.read_i16_be OUT_Y_H_M_,
+      reg_.read_i16_be OUT_Z_H_M_,
     ]

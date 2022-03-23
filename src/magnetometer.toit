@@ -59,8 +59,7 @@ class Magnetometer:
 
   enable -> none
       --rate  /int = RATE_7_5HZ
-      --range /int = RANGE_1_3G
-      :
+      --range /int = RANGE_1_3G:
     if not 0 <= rate < 7: throw "INVALID_RATE"
     if not 1 <= range < 8: throw "INVALID_RANGE"
 

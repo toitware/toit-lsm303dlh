@@ -1,1 +1,2 @@
-# Toit Package File.
+name: lsm303dlh
+description: Driver for the LSM303DLH accelerometer and magnetometer.

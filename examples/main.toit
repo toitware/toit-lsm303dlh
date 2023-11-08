@@ -5,7 +5,6 @@
 import gpio
 import i2c
 import lsm303dlh show *
-import device show FlashStore
 
 main:
   bus := i2c.Bus

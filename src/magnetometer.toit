@@ -11,43 +11,43 @@ import math
 Driver for the magnetometer of the LSM303DLH module.
 */
 class Magnetometer:
-  static I2C_ADDRESS ::= 0b11110  // 7.1.3.
+  static I2C-ADDRESS ::= 0b11110  // 7.1.3.
 
   // 8. Register mapping.
-  static CRA_REG_M_ ::= 0x00
-  static CRB_REG_M_ ::= 0x01
-  static MR_REG_M_ ::= 0x02
-  static OUT_X_H_M_ ::= 0x03
-  static OUT_X_L_M_ ::= 0x04
-  static OUT_Y_H_M_ ::= 0x05
-  static OUT_Y_L_M_ ::= 0x06
-  static OUT_Z_H_M_ ::= 0x07
-  static OUT_Z_L_M_ ::= 0x08
-  static IRA_REG_M_ ::= 0x0A
-  static IRB_REG_M_ ::= 0x0B
-  static IRC_REG_M_ ::= 0x0C
+  static CRA-REG-M_ ::= 0x00
+  static CRB-REG-M_ ::= 0x01
+  static MR-REG-M_ ::= 0x02
+  static OUT-X-H-M_ ::= 0x03
+  static OUT-X-L-M_ ::= 0x04
+  static OUT-Y-H-M_ ::= 0x05
+  static OUT-Y-L-M_ ::= 0x06
+  static OUT-Z-H-M_ ::= 0x07
+  static OUT-Z-L-M_ ::= 0x08
+  static IRA-REG-M_ ::= 0x0A
+  static IRB-REG-M_ ::= 0x0B
+  static IRC-REG-M_ ::= 0x0C
 
-  static RATE_0_75HZ ::= 0
-  static RATE_1_5HZ  ::= 1
-  static RATE_3HZ    ::= 2
-  static RATE_7_5HZ  ::= 3
-  static RATE_15HZ   ::= 4
-  static RATE_30HZ   ::= 5
-  static RATE_75HZ   ::= 6
+  static RATE-0-75HZ ::= 0
+  static RATE-1-5HZ  ::= 1
+  static RATE-3HZ    ::= 2
+  static RATE-7-5HZ  ::= 3
+  static RATE-15HZ   ::= 4
+  static RATE-30HZ   ::= 5
+  static RATE-75HZ   ::= 6
 
-  static RANGE_1_3G ::= 1
-  static RANGE_1_9G ::= 2
-  static RANGE_2_5G ::= 3
-  static RANGE_4_0G ::= 4
-  static RANGE_4_7G ::= 5
-  static RANGE_5_6G ::= 6
-  static RANGE_8_1G ::= 7
+  static RANGE-1-3G ::= 1
+  static RANGE-1-9G ::= 2
+  static RANGE-2-5G ::= 3
+  static RANGE-4-0G ::= 4
+  static RANGE-4-7G ::= 5
+  static RANGE-5-6G ::= 6
+  static RANGE-8-1G ::= 7
 
-  static GAUSS_TO_MICROTESLA_ ::= 100.0
+  static GAUSS-TO-MICROTESLA_ ::= 100.0
 
   reg_ /serial.Registers
-  gain_xy_ /int := -1
-  gain_z_  /int := -1
+  gain-xy_ /int := -1
+  gain-z_  /int := -1
 
   constructor dev/serial.Device:
     reg_ = dev.registers
@@ -55,53 +55,53 @@ class Magnetometer:
     // There is no who-am-i register on the magnetometer, but the
     // IRx_REG_M registers seem to be constant (x being A, B and C).
     // Section 6. Table 17.
-    value := reg_.read_u24_be IRA_REG_M_
+    value := reg_.read-u24-be IRA-REG-M_
     if value != 0x483433: throw "INVALID_CHIP"
 
   enable -> none
-      --rate  /int = RATE_7_5HZ
-      --range /int = RANGE_1_3G:
+      --rate  /int = RATE-7-5HZ
+      --range /int = RANGE-1-3G:
     if not 0 <= rate < 7: throw "INVALID_RATE"
     if not 1 <= range < 8: throw "INVALID_RANGE"
 
     // 9.2.1, Table 58.
-    cra_value := rate << 2
-    reg_.write_u8 CRA_REG_M_ cra_value
+    cra-value := rate << 2
+    reg_.write-u8 CRA-REG-M_ cra-value
 
     // 9.2.2, Table 62.
     // Most significant bits of CRB_REG_M defines the range.
-    reg_.write_u8 CRB_REG_M_ (range << 5)
+    reg_.write-u8 CRB-REG-M_ (range << 5)
     // Remember the gains (given by the range).
-    if range == RANGE_1_3G:
-      gain_xy_ = 1055
-      gain_z_ = 950
-    else if range == RANGE_1_9G:
-      gain_xy_ = 795
-      gain_z_ = 710
-    else if range == RANGE_2_5G:
-      gain_xy_ = 635
-      gain_z_ = 570
-    else if range == RANGE_4_0G:
-      gain_xy_ = 430
-      gain_z_ = 385
-    else if range == RANGE_4_7G:
-      gain_xy_ = 375
-      gain_z_ = 335
-    else if range == RANGE_5_6G:
-      gain_xy_ = 320
-      gain_z_ = 285
-    else if range == RANGE_8_1G:
-      gain_xy_ = 230
-      gain_z_ = 205
+    if range == RANGE-1-3G:
+      gain-xy_ = 1055
+      gain-z_ = 950
+    else if range == RANGE-1-9G:
+      gain-xy_ = 795
+      gain-z_ = 710
+    else if range == RANGE-2-5G:
+      gain-xy_ = 635
+      gain-z_ = 570
+    else if range == RANGE-4-0G:
+      gain-xy_ = 430
+      gain-z_ = 385
+    else if range == RANGE-4-7G:
+      gain-xy_ = 375
+      gain-z_ = 335
+    else if range == RANGE-5-6G:
+      gain-xy_ = 320
+      gain-z_ = 285
+    else if range == RANGE-8-1G:
+      gain-xy_ = 230
+      gain-z_ = 205
 
     // 9.2.3, Table 65.
     // Continuous-conversion mode.
-    reg_.write_u8 MR_REG_M_ 0x0
+    reg_.write-u8 MR-REG-M_ 0x0
 
   disable -> none:
     // 7.2.3, Table 78.
     // Sleep mode.
-    reg_.write_u8 MR_REG_M_ 0b11
+    reg_.write-u8 MR-REG-M_ 0b11
 
   /**
   Reads the magnetic field.
@@ -111,24 +111,24 @@ class Magnetometer:
     sensor to measure the magnetic field.
   */
   read -> math.Point3f:
-    raw := read_raw_
+    raw := read-raw_
     x := raw[0]
     y := raw[1]
     z := raw[2]
 
-    x_converted := x * GAUSS_TO_MICROTESLA_ / gain_xy_
-    y_converted := y * GAUSS_TO_MICROTESLA_ / gain_xy_
-    z_converted := z * GAUSS_TO_MICROTESLA_ / gain_z_
+    x-converted := x * GAUSS-TO-MICROTESLA_ / gain-xy_
+    y-converted := y * GAUSS-TO-MICROTESLA_ / gain-xy_
+    z-converted := z * GAUSS-TO-MICROTESLA_ / gain-z_
 
     // 9.2.4 Check for saturation.
-    if x == -4096: x_converted = float.INFINITY
-    if y == -4096: y_converted = float.INFINITY
-    if z == -4096: z_converted = float.INFINITY
+    if x == -4096: x-converted = float.INFINITY
+    if y == -4096: y-converted = float.INFINITY
+    if z == -4096: z-converted = float.INFINITY
 
     return math.Point3f
-        x_converted
-        y_converted
-        z_converted
+        x-converted
+        y-converted
+        z-converted
 
   /**
   Reads the raw magnetic field values.
@@ -138,12 +138,12 @@ class Magnetometer:
   */
   read --raw -> List:
     if not raw: throw "INVALID_ARGUMENT"
-    return read_raw_
+    return read-raw_
 
-  read_raw_ -> List:
-    bytes := reg_.read_bytes OUT_X_H_M_ 6
+  read-raw_ -> List:
+    bytes := reg_.read-bytes OUT-X-H-M_ 6
     return [
-      io.BIG_ENDIAN.int16 bytes 0,
-      io.BIG_ENDIAN.int16 bytes 2,
-      io.BIG_ENDIAN.int16 bytes 4,
+      io.BIG-ENDIAN.int16 bytes 0,
+      io.BIG-ENDIAN.int16 bytes 2,
+      io.BIG-ENDIAN.int16 bytes 4,
     ]

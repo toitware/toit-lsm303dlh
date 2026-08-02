@@ -4,6 +4,7 @@
 
 import serial.device as serial
 import serial.registers as serial
+import io
 import math
 
 /**
@@ -110,9 +111,10 @@ class Magnetometer:
     sensor to measure the magnetic field.
   */
   read -> math.Point3f:
-    x := reg_.read_i16_be OUT_X_H_M_
-    y := reg_.read_i16_be OUT_Y_H_M_
-    z := reg_.read_i16_be OUT_Z_H_M_
+    raw := read_raw_
+    x := raw[0]
+    y := raw[1]
+    z := raw[2]
 
     x_converted := x * GAUSS_TO_MICROTESLA_ / gain_xy_
     y_converted := y * GAUSS_TO_MICROTESLA_ / gain_xy_
@@ -136,8 +138,12 @@ class Magnetometer:
   */
   read --raw -> List:
     if not raw: throw "INVALID_ARGUMENT"
+    return read_raw_
+
+  read_raw_ -> List:
+    bytes := reg_.read_bytes OUT_X_H_M_ 6
     return [
-      reg_.read_i16_be OUT_X_H_M_,
-      reg_.read_i16_be OUT_Y_H_M_,
-      reg_.read_i16_be OUT_Z_H_M_,
+      io.BIG_ENDIAN.int16 bytes 0,
+      io.BIG_ENDIAN.int16 bytes 2,
+      io.BIG_ENDIAN.int16 bytes 4,
     ]

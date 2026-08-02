@@ -10,8 +10,8 @@ main:
     --sda=21
     --scl=22
 
-  accelerometer := Accelerometer (bus.device Accelerometer.I2C_ADDRESS)
-  magnetometer := Magnetometer (bus.device Magnetometer.I2C_ADDRESS)
+  accelerometer := Accelerometer (bus.device Accelerometer.I2C-ADDRESS)
+  magnetometer := Magnetometer (bus.device Magnetometer.I2C-ADDRESS)
 
   accelerometer.enable
   magnetometer.enable
